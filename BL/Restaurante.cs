@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    class Restaurante
+    public class Restaurante
     {
+
+        private readonly DL.RestauranteContext _context;
+
+        public Restaurante(DL.RestauranteContext context)
+        {
+            _context = context;
+        }
+
+
+
     }
 }
