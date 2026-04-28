@@ -81,5 +81,32 @@ namespace BL
             return result;
         }
 
+        public ML.Result Delete(int idRestaurante)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                int rowsAffected = _context.Database.ExecuteSqlRaw(
+                    "EXEC RestauranteDelete @IdRestaurante = {0}",
+                    idRestaurante);
+
+                result.Correct = rowsAffected > 0;
+
+                if (!result.Correct)
+                {
+                    result.ErrorMessage = "No se pudo eliminar el registro.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
     }
 }
