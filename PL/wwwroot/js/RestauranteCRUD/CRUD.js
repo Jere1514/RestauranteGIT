@@ -100,3 +100,25 @@ function GetById(id) {
         }
     });
 }
+
+$.ajax({
+    url: '/Restaurante/Update',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(restaurante),
+
+    success: function (result) {
+
+        if (result.success) {
+            alert('Actualizado correctamente');
+            $('#modalRestaurante').modal('hide');
+            GetAll();
+        } else {
+            alert(result.error || 'Error al actualizar');
+        }
+    },
+    error: function () {
+        alert('Error en update');
+    }
+});
+}
