@@ -29,6 +29,11 @@ function GetAll() {
                         <td>${item.fechaApertura}</td>
                         <td>${item.fechaCierre}</td>
                         <td>${direccionCompleta}</td>
+                        <td>
+                        <button class = "btn bton-danger" onclick "Delete(${item.idRestaurante})">
+                        Eliminar </button>
+                       
+                        </td>
                     </tr>
                 `;
             });
@@ -37,6 +42,30 @@ function GetAll() {
         },
         error: function () {
             alert('Error al obtener los datos');
+        }
+    });
+}
+
+
+function Delete(id) {
+    if (!confirm("Estas seguro de que quieres elminar el restaurante?")) {
+        return;
+    }
+    $.ajax({
+        url: '/Restaurante/Delete',
+        type: 'Post',
+        data: { id: id },
+        success: function (result) {
+
+            if (result.success) {
+                alert('Eliminado correctamente');
+                GetAll();
+            } else {
+                alert(result.error || 'Error al eliminar');
+            }
+        },
+        error: function () {
+            alert('Error ');
         }
     });
 }
