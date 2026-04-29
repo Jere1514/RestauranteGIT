@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,6 +164,37 @@ namespace BL
         }
 
 
+        public ML.Result Update(ML.Restaurante restaurante)
+        {
+            ML.Result result = new ML.Result();
 
+            try
+            {
+                int rowsAffected = _context.Database.ExecuteSqlRaw(
+                    "EXEC RestauranteUpdate @IdRestaurante = {0}, @Nombre = {1}, @Logo = {2}, @FechaApertura = {3}, @FechaCierre = {4}, @IdDireccion = {5}",
+                    restaurante.IdRestaurante,
+                    restaurante.Nombre,
+                    DBNull.Value, // logo
+                    restaurante.FechaApertura,
+                    restaurante.FechaCierre ?? (object)DBNull.Value,
+                    restaurante.Direccion.IdDireccion
+                );
+
+                result.Correct = rowsAffected > 0;
+
+                if (!result.Correct)
+                {
+                    result.ErrorMessage = "No se pudo actualizar el restaurante.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
     }
 }
