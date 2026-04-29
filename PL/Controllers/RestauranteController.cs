@@ -57,5 +57,21 @@ namespace PL.Controllers
                 return Json(new { error = result.ErrorMessage });
             }
         }
+
+        [HttpPost]
+        public JsonResult Update([FromBody] ML.Restaurante restaurante)
+        {
+            ML.Result result = _restauranteBL.Update(restaurante);
+
+            if (result.Correct)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { error = result.ErrorMessage });
+            }
+        }
+
     }
 }
