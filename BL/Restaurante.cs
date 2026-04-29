@@ -108,5 +108,61 @@ namespace BL
             return result;
         }
 
+        public ML.Result GetById(int idRestaurante)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                var query = _context.SPGetAll
+                    .FromSqlRaw("EXEC RestauranteGetById @IdRestaurante = {0}", idRestaurante)
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+                if (query != null)
+                {
+                    ML.Restaurante restaurante = new ML.Restaurante();
+
+                    restaurante.IdRestaurante = query.IdRestaurante;
+                    restaurante.Nombre = query.Nombre;
+                    restaurante.FechaApertura = query.FechaApertura;
+                    restaurante.FechaCierre = query.FechaCierre;
+
+                    restaurante.Direccion = new ML.Direccion();
+                    restaurante.Direccion.IdDireccion = query.IdRestaurante;
+                    restaurante.Direccion.Calle = query.Calle;
+                    restaurante.Direccion.NumeroExterior = query.NumeroExterior;
+                    restaurante.Direccion.NumeroInterior = query.NumeroInterior;
+
+                    restaurante.Direccion.Colonia = new ML.Colonia();
+                    restaurante.Direccion.Colonia.Nombre = query.NombreColonia;
+
+                    restaurante.Direccion.Colonia.Municipio = new ML.Municipio();
+                    restaurante.Direccion.Colonia.Municipio.Nombre = query.NombreMunicipio;
+
+                    restaurante.Direccion.Colonia.Municipio.Estado = new ML.Estado();
+                    restaurante.Direccion.Colonia.Municipio.Estado.Nombre = query.NombreEstado;
+
+                    result.Object = restaurante;
+                    result.Correct = true;
+                }
+                else
+                {
+                    result.Correct = false;
+                    result.ErrorMessage = "No se encontró el restaurante.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
+
+
     }
 }
