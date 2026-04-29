@@ -43,5 +43,19 @@ namespace PL.Controllers
                 return Json(new { error = result.ErrorMessage });
             }
         }
+
+        public JsonResult GetById(int id)
+        {
+            ML.Result result = _restauranteBL.GetById(id);
+
+            if (result.Correct)
+            {
+                return Json(result.Object);
+            }
+            else
+            {
+                return Json(new { error = result.ErrorMessage });
+            }
+        }
     }
 }
