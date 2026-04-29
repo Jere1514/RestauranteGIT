@@ -30,7 +30,12 @@ function GetAll() {
                         <td>${item.fechaCierre}</td>
                         <td>${direccionCompleta}</td>
                         <td>
+                        <td>
+                        <button class="btn btn-warning" onclick="GetById(${item.idRestaurante})">
+                            Editar
+                        </button>
                         <button class="btn btn-danger" onclick="Delete(${item.idRestaurante})">
+
                     </tr>
                 `;
             });
