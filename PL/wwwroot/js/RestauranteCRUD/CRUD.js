@@ -122,3 +122,37 @@ $.ajax({
     }
 });
 }
+
+function Update() {
+
+    let restaurante = {
+        idRestaurante: $('#IdRestaurante').val(),
+        nombre: $('#Nombre').val(),
+        fechaApertura: $('#FechaApertura').val(),
+        fechaCierre: $('#FechaCierre').val(),
+
+        direccion: {
+            idDireccion: $('#IdDireccion').val()
+        }
+    };
+
+    $.ajax({
+        url: '/Restaurante/Update',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(restaurante),
+
+        success: function (result) {
+            if (result.success) {
+                alert('Actualizado correctamente');
+                $('#modalRestaurante').modal('hide');
+                GetAll();
+            } else {
+                alert(result.error || 'Error al actualizar');
+            }
+        },
+        error: function () {
+            alert('Error en update');
+        }
+    });
+}
