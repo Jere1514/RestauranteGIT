@@ -30,10 +30,7 @@ function GetAll() {
                         <td>${item.fechaCierre}</td>
                         <td>${direccionCompleta}</td>
                         <td>
-                        <button class = "btn bton-danger" onclick "Delete(${item.idRestaurante})">
-                        Eliminar </button>
-                       
-                        </td>
+                        <button class="btn btn-danger" onclick="Delete(${item.idRestaurante})">
                     </tr>
                 `;
             });
@@ -66,6 +63,35 @@ function Delete(id) {
         },
         error: function () {
             alert('Error ');
+        }
+    });
+}
+
+function GetById(id) {
+    $.ajax({
+        url: '/Restaurante/GetById?id=' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function (item) {
+
+            if (item.error) {
+                alert(item.error);
+                return;
+            }
+
+            // llenar formulario
+            $('#IdRestaurante').val(item.idRestaurante);
+            $('#Nombre').val(item.nombre);
+            $('#FechaApertura').val(item.fechaApertura);
+            $('#FechaCierre').val(item.fechaCierre);
+
+            $('#IdDireccion').val(item.direccion.idDireccion);
+
+            // aquí puedes abrir modal
+            $('#modalRestaurante').modal('show');
+        },
+        error: function () {
+            alert('Error al obtener el registro');
         }
     });
 }
